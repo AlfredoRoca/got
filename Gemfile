@@ -21,6 +21,7 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'annotate'
   gem 'rails_layout'
+  gem 'rubocop', require: false
 end
 
 group :development, :test do
