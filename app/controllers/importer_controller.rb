@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 class ImporterController < ApplicationController
-  def form
-  end
+  def form; end
 
   def upload
+    @importer_result = []
+
     CSV.parse(params[:csv].read, csv_options) do |row|
-      # TODO
+      @importer_result.push Character.create_with(row)
     end
   end
 
@@ -13,7 +16,7 @@ class ImporterController < ApplicationController
   def csv_options
     {
       headers: true,
-      header_converters: :symbol,
+      header_converters: :symbol
     }
   end
 end
