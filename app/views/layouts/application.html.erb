@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "Game Of Thrones" %></title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond:600" rel="stylesheet">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Game Of Thrones" %>">
+    <%= favicon_link_tag 'favicon.ico', id: 'favicon' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <header>
+      <%= render 'layouts/navigation' %>
+    </header>
+    <main role="main container">
+       <%= render 'layouts/messages' %>
+       <%= yield %>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="col-md-12 col-lg-12">
+          <p class="text-muted">Credits <a href="http://gameofthrones.wikia.com/wiki/Game_of_Thrones_Wiki">Wikia Games of Thrones</a> under the Creative Commons Attribution-Share Alike License Unported (CC BY-SA 3.0)</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<div class="col-md-12 col-lg-12 col-xs-12 character">
+  <div class="col-lg-12 col-md-12 col-xs-12 character-header">
+    <div class="col-md-2 col-lg-2 col-xs-3">
+      <% if @character.images.first %>
+        <%=  image_tag("#{@character.images.first.source}", :class => 'img-responsive') %>
+      <% else %>
+        <%=  image_tag("default.png", :class => 'img-responsive') %>
+      <% end %>
+    </div>
+    <div class="col-md-10 col-lg-10 col-xs-9">
+      <h2><%= @character.name %></h2>
+      <h3>From <%= link_to @character.house.name, house_path(@character.house.id) %></h3>
+      <% if @character.titles.present? %>
+        <p><b>Titles:</b> <%= @character.titles %></p>
+      <% end %>
+      <% if @character.status.present? %>
+        <p><b>Status:</b> <%= @character.status %></p>
+      <% end %>
+      <% if @character.death.present? %>
+        <p><b>Death:</b> <%= @character.death %></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <h1>General</h1>
+    <div class="col-md-5 col-lg-5 col-xs-12">
+      <h2>Description</h2>
+      <p><%= @character.description %></p>
+    </div>
+    <div class="col-md-7 col-lg-7 col-xs-12">
+      <% if @character.biography.present? %>
+        <h2>Biography</h2>
+        <p><%= @character.biography %></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <%= render partial: "show_section", locals: { fields: show_character_relationship_fields,
+                                                  character: @character,
+                                                  title: "Relationships"} %>
+    <div class="col-md-12 col-lg-12 col-xs-12">
+      <%= link_to 'More family relationships', family_character_path(@character) %>
+    </div>
+  </div>
+  <div class="row">
+    <%= render partial: "show_section", locals: { fields: show_character_beliefs_fields,
+                                                  character: @character,
+                                                  title: "Personal beliefs"} %>
+    <% if @character.personality.present? %>
+      <h2>Personality</h2>
+      <p><%= split_per_character(@character.personality, "\n") %></p>
+    <% end %>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-lg-12 col-xs-12">
+      <h1>Appeareance in the serie</h1>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <% (1..9).each do |i| %>
+            <th class="text-center">
+            <%= "Season #{i}" %>
+            </th>
+            <% end %>
+          </thead>
+          <tbody>
+            <% (1..9).each do |i| %>
+            <td>
+            <% if @character["appears_in_season_#{i}"] == true %>
+            <%=  image_tag('check')%>
+            <% else %>
+            <%=  image_tag('times')%>
+            <% end %>
+            </td>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <% if @character.images.size > 1 %>
+        <h2>Other images</h2>
+        <% @character.images[1..-1].each do |image| %>
+        <div class="col-md-3 col-lg-3">
+        <%= image_tag(image.source, :class => 'img-responsive') %>
+        <p class="caption text-center">
+          <%= image.caption %>
+        </p>
+        </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <%= link_to 'Modify character', edit_character_path(@character), :class => 'btn btn-default' %>
+    </div>
+  </div>
+</div>

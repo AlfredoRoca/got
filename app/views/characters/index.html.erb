@@ -1,0 +1,13 @@
+<h1>Characters
+<%= link_to 'New Character', new_character_path, :class => 'btn btn-default pull-right' %></h1>
+
+<% @characters.each_slice(2) do |character1, character2| %>
+  <div class="row">
+    <%= render partial: "character", locals: {character: character1} %>
+    <%= render partial: "character", locals: {character: character2} if character2 %>
+  </div>
+<% end %>
+
+<div class="col-md-12 col-lg-12 col-xs-12 text-center">
+  <%= paginate @characters, theme: 'twitter-bootstrap-3' %>
+</div>

@@ -1,0 +1,27 @@
+<div class="col-md-12 col-lg-12">
+  <h1>Image</h1>
+</div>
+<div class="col-md-5 col-lg-5">
+  <%= image_tag(@image.source, :class => 'img-responsive') %>
+</div>
+
+<div class="col-md-7 col-lg-7">
+  <p>
+    <strong>Source:</strong>
+    <%= @image.source %>
+  </p>
+  <p>
+    <strong>Caption:</strong>
+    <%= @image.caption %>
+  </p>
+
+  <p>
+    <strong>Character:</strong>
+    <%= link_to @image.character.name, character_path(@image.character.id) %>
+  </p>
+</div>
+
+<div class="col-md-12 col-lg-12">
+  <%= link_to 'Edit', edit_image_path(@image) %> |
+  <%= link_to 'Back', images_path %>
+</div>

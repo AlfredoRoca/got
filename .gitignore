@@ -1,0 +1,9 @@
+# Ignore all logfiles and tempfiles.
+/log
+/tmp
+
+# secrets
+config/database.yml
+config/secrets.yml
+
+app/.DS_Store

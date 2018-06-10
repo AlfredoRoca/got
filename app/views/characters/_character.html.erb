@@ -1,0 +1,21 @@
+<div class="col-md-6 col-lg-6 col-xs-12 list-container">
+  <div class="col-md-12 col-lg-3 col-xs-3">
+    <% if character.images.first %>
+      <%=  image_tag("#{character.images.first.source}", :class => 'img-responsive') %>
+    <% else %>
+      <%=  image_tag("default.png", :class => 'img-responsive') %>
+    <% end %>
+  </div>
+  <div class="col-md-12 col-lg-9 col-xs-9">
+    <h2><%= character.name %>
+      <span class="house-name pull-right"><%= character.house.name %></span>
+    </h2>
+    <% if character.status.present? %>
+      <p><em><%= character.status %></em></p>
+    <% end %>
+    <% if character.death.present? %>
+      <p><b>Death:</b> <%= character.death.truncate(40, omission: "...") %></p>
+    <% end %>
+  </div>
+  <%= link_to("", character_path(character) , :class => 'box-show-link') %>
+</div>

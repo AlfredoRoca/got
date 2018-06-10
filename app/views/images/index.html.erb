@@ -1,0 +1,31 @@
+<h1>Images</h1>
+
+<%= link_to 'New Image', new_image_path, :class => 'btn btn-primary' %>
+
+<table class='table table-responsive'>
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Caption</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @images.each do |image| %>
+      <tr>
+        <td><%= link_to image_tag("#{image.source}"), image %></td>
+        <td><%= image.caption %></td>
+        <td><%= link_to 'Edit', edit_image_path(image) %></td>
+        <td><%= link_to 'Destroy', image, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+
+<div class="col-md-6">
+  <%= paginate @images, theme: 'twitter-bootstrap-3' %>
+</div>

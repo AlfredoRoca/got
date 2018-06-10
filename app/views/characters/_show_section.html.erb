@@ -1,0 +1,10 @@
+<% if fields.select { |f| character[f].present? }.size > 0 %>
+  <h1><%= title %></h1>
+<% end %>
+<% fields.select { |f| character[f].present? }.each_slice(4) do |fields| %>
+  <div class="row">
+    <% fields.each do |f| %>
+      <%= format_fields(f, character[f]) %>
+    <% end %>
+  </div>
+<% end %>

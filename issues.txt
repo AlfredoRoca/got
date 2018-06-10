@@ -1,0 +1,34 @@
+ISSUE 1
+
+Create an importer for characters
+I realized that create the characters using the form is incredibly slow and error prone, so we'd need to be able to create characters massively.I think using a CSV file where we can have all the fields at once speed our job up and does not seem like a very time consuming task. Each column represents a field in the database, and each row a character to be created.
+The interface doesn't to be very nice at first, it is more important to be done right now, so we can go on with all the data importation.
+However an essential feature should be to see the result of the import by row. If everything goes fine we can show a link to the created character, otherwise show what error occurred during the creation. This way we can create a new file with only the failed rows, fix them and upload them again until every character is correctly created.
+
+
+
+ISSUE 2
+
+
+Add relationships between characters
+I think our editors make mistakes we could avoid. I.e.: Robb Stark's father was Eddard Stark, but they forgot to add Robb as son of Eddard.
+So I think is better to only define the relation in one direction with each character's father and mother. This way we avoid keystrokes and remove unnecessary and redundant fields like children.
+Spouse and in-laws can be a little bit more difficult, as there are characters with more than one, so for the moment we won't do it. I prefer experimenting this new solution for blood family relationships and if it works properly, maybe we'll do for in-laws as well.
+
+
+ISSUE 3
+
+
+Add family relationships view
+We want each character to have a family view. It would help our visitors understand better the relationships among characters. They usually enter in our web to remember who is who in the TV show. We can add a Family link in the character show view.
+In the Family view we will show:
+Grand parents
+Parents
+Siblings
+Step siblings
+Children
+Grandchildren
+Uncles and aunts
+Cousins
+Each relationship should be a link to the relative.
+For the moment we do not show the family-in-law. When we have the backend part finished the designer can improve the view. After that we can start thinking about in-laws, which I think will be more difficult

@@ -1,0 +1,37 @@
+// Place all the styles related to the Houses controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+h2
+  font-size: 1.7em
+  font-weight: 600
+  margin-top: 0
+
+p
+  font-size: 1.15em
+  text-align: justify
+
+.list-container, .house-header
+  p
+    font-size: 1.3em
+
+.list-container
+  height: 200px
+  padding: 20px
+  display: table
+  @include transition(background-color 0.15s)
+  &:hover
+    @include transition(background-color 0.2s)
+    background-color: rgba(164, 196,198, 0.3)
+  img
+    max-height: 150px
+
+.house-header, .character-header
+  height: 180px
+  padding: 20px
+  background-color: rgba(164, 196,198, 0.3)
+  margin-bottom: 30px
+  display: table
+
+.character-header img
+  display: inline-block
+  margin-left: 10px

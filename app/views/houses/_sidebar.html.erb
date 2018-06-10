@@ -1,0 +1,7 @@
+<% fields.select { |f| house[f].present? }.each_slice(2) do |fields| %>
+  <div class="col-md-6 col-lg-6 col-xs-12">
+    <% fields.each do |f| %>
+      <%= format_general_info(f, house[f]) %>
+    <% end %>
+  </div>
+<% end %>

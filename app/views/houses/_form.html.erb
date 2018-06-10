@@ -1,0 +1,67 @@
+<%= form_for(house) do |f| %>
+  <% if house.errors.any? %>
+    <div id="alert alert-warning">
+      <h2><%= pluralize(house.errors.count, "error") %> prohibited this house from being saved:</h2>
+
+      <ul>
+      <% house.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_field :description, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :background %>
+    <%= f.text_field :background, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :words %>
+    <%= f.text_field :words, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :seat %>
+    <%= f.text_field :seat, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :region %>
+    <%= f.text_field :region, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :lord %>
+    <%= f.text_field :lord, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :religion %>
+    <%= f.text_field :religion, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :sigil_url %>
+    <%= f.text_field :sigil_url, :class => 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :sigil %>
+    <%= f.text_field :sigil, :class => 'form-control' %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit :class => 'btn btn-primary' %>
+  </div>
+<% end %>

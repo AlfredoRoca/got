@@ -1,0 +1,39 @@
+<div class="col-lg-12 col-md-12 col-xs-12 house-header">
+  <div class="col-md-2 col-lg-2 col-xs-3">
+    <%= image_tag(@house.sigil_url) %>
+  </div>
+  <div class="col-md-10 col-lg-10 col-xs-9">
+    <h2><%= @house.name %></h2>
+    <p><%= @house.words %></p>
+    <p>Their sigil is <%= @house.sigil.downcase %></p>
+  </div>
+</div>
+
+<div class="col-md-12 col-lg-12 col-xs-12">
+  <h1>General
+  <%= link_to 'Modify house', edit_house_path(@house), :class => 'btn btn-default pull-right' %>
+  </h1>
+  <div class="col-md-6 col-lg-6 col-xs-12">
+    <h2>Description</h2>
+    <%= split_per_character(@house.description, "\n") %>
+  </div>
+
+  <%= render partial: 'sidebar', locals: {fields: show_house_general_info_fields, house: @house} %>
+
+  <% if @house.background %>
+  <div class="col-md-12 col-lg-12 col-xs-12">
+    <h2>Background</h2>
+    <%= split_per_character(@house.background, "\n") %>
+  </div>
+  <% end %>
+</div>
+
+<div class="col-md-12 col-lg-12 col-xs-12">
+  <h1>Some characters</h1>
+  <% @characters.each_slice(2) do |character1, character2| %>
+    <div class="row">
+      <%= render partial: "/characters/character", locals: {character: character1} %>
+      <%= render partial: "/characters/character", locals: {character: character2} if character2 %>
+    </div>
+  <% end %>
+</div>

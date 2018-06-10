@@ -1,0 +1,16 @@
+<h1>Houses
+<%= link_to 'Add a new House', new_house_path, :class => 'btn btn-default pull-right' %>
+</h1>
+
+<% @houses.each do |house| %>
+  <div class="col-md-6 col-lg-6 col-xs-12 list-container">
+    <div class="col-md-2 col-lg-2 col-xs-3">
+      <%= image_tag(house.sigil_url) %>
+    </div>
+    <div class="col-md-10 col-lg-10 col-xs-9">
+      <h2><%= house.name %></h2>
+      <p><%= house.words %></p>
+    </div>
+    <%= link_to("", house_path(house) , :class => 'box-show-link') %>
+  </div>
+<% end %>
