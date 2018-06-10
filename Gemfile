@@ -22,6 +22,9 @@ group :development do
   gem 'annotate'
   gem 'rails_layout'
   gem 'rubocop', require: false
+  gem 'guard-rspec', require: false
+  gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :development, :test do
