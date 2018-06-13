@@ -82,7 +82,7 @@ RSpec.describe Character, type: :model do
         'biography': '', 'personality': '', 'seasons': '2, 5 ,7 ,10',
         'titles': '', 'status': '', 'death': '', 'origin': '', 'allegiance': '',
         'culture': '', 'religion': '', 'predecessor': '', 'successor': '',
-        'father': '', 'mother': '', 'spouse': '', 'children': '',
+        'father': 'Pepe', 'mother': 'Lola', 'spouse': '', 'children': '',
         'siblings': '', 'lovers': '',
         'image_1_src': 'http://source_of_image.com/image1.png',
         'image_1_caption': 'image1_caption',
@@ -145,6 +145,13 @@ RSpec.describe Character, type: :model do
         row_hash = valid_character_row_hash
         character = described_class.create_with(row_hash)[:character]
         expect(character.images.count).to eq 8
+      end
+
+      it 'saves parents names in their fields' do
+        row_hash = valid_character_row_hash
+        character = described_class.create_with(row_hash)[:character]
+        expect(character.father_name).to eq 'Pepe'
+        expect(character.mother_name).to eq 'Lola'
       end
     end
 
@@ -218,6 +225,74 @@ RSpec.describe Character, type: :model do
       row_hash = valid_character_row_hash
       row_hash[:image_1_src] = ''
       expect(described_class.get_images_from(row_hash).size).to eq 7
+    end
+  end
+
+  def prepare_characters
+    @father = create(:character, name: 'Paco', description: 'Paco is father',
+                                 house: house, father_name: '', mother_name: '')
+    @mother = create(:character, name: 'Lola', description: 'Lola is mother',
+                                 house: house, father_name: '', mother_name: '')
+  end
+
+  describe 'search_and_save_parent_with_diagnosis' do
+    let(:house) { create :house }
+    let(:son) do
+      create(:character, name: 'Jose', description: 'Jose is son',
+                         house: house, father_name: '', mother_name: '')
+    end
+
+    it 'assigns a character as father found by name on father field' do
+      prepare_characters
+      son.update(father_name: 'Paco')
+      son.search_and_save_parent_with_diagnosis('father')
+
+      expect(son.father.name).to eq @father.name
+    end
+
+    it 'assigns a character as mother found by name on mother field' do
+      prepare_characters
+      son.update(mother_name: 'Lola')
+      son.search_and_save_parent_with_diagnosis('mother')
+
+      expect(son.mother.name).to eq @mother.name
+    end
+
+    it 'returns not found when father or mother name is missing and sons name _
+      is not in any children field' do
+      prepare_characters
+      response = son.search_and_save_parent_with_diagnosis('father')
+
+      expect(response[:diagnosis]) =~ 'not found'
+    end
+
+    it 'returns possible fathers found by their children when father character _
+      not found by name' do
+      prepare_characters
+      @father.update(children: 'Jose')
+      son.update(father_name: 'Paquito')
+      response = son.search_and_save_parent_with_diagnosis('father')
+
+      expect(response[:diagnosis]) =~ @father.name
+    end
+
+    it 'returns possible mothers found by their children when mother character _
+      not found by name' do
+      prepare_characters
+      @mother.update(children: 'Jose')
+      son.update(mother_name: 'Lolita')
+      response = son.search_and_save_parent_with_diagnosis('mother')
+
+      expect(response[:diagnosis]) =~ @mother.name
+    end
+
+    it 'returns not found when father character not found neither by name _
+      nor children' do
+      prepare_characters
+      son.update(father_name: 'Pacote')
+      response = son.search_and_save_parent_with_diagnosis('father')
+
+      expect(response[:diagnosis]) =~ @mother.name
     end
   end
 end

@@ -51,8 +51,8 @@ FactoryGirl.define do
     religion { Faker::Lorem.sentence }
     predecessor { Faker::GameOfThrones.character }
     successor { Faker::GameOfThrones.character }
-    father { Faker::GameOfThrones.character }
-    mother { Faker::GameOfThrones.character }
+    father_name { Faker::GameOfThrones.character }
+    mother_name { Faker::GameOfThrones.character }
     spouse { Faker::GameOfThrones.character }
     children { Faker::GameOfThrones.character }
     siblings { Faker::GameOfThrones.character }
