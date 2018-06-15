@@ -295,4 +295,235 @@ RSpec.describe Character, type: :model do
       expect(response[:diagnosis]) =~ @mother.name
     end
   end
+
+  let(:character) { create(:character) }
+
+  describe 'parents' do
+    it 'returns none if character neither has no declared parents
+      and nobody has declared it as children' do
+      character = create(:character, father_name: '', mother_name: '')
+
+      expect(character.parents.class).to be Character::ActiveRecord_Relation
+      expect(character.parents).to be_empty
+    end
+
+    it 'returns none if character declared parents are
+      not in the database' do
+      character = create(:character,
+                         father_name: 'Paco de Lucía', mother_name: 'Lola Flores')
+
+      expect(character.parents.class).to be Character::ActiveRecord_Relation
+      expect(character.parents).to be_empty
+    end
+
+    it 'returns the parents' do
+      father_character = create(:character)
+      mother_character = create(:character)
+      character = create(:character, father_name: father_character.name,
+                                     mother_name: mother_character.name)
+
+      expect(character.parents.class).to be Character::ActiveRecord_Relation
+      expect(character.parents).to include(father_character, mother_character)
+    end
+  end
+
+  describe 'children_characters' do
+    it 'returns none if character has no children and nobody has declared
+      him as parent' do
+      character = create(:character, children: '')
+
+      expect(character.children_characters.class).to be Character::ActiveRecord_Relation
+      expect(character.children_characters).to be_empty
+    end
+
+    it 'returns none if character has declared children but they do not exist' do
+      character = create(:character, children: 'Fernando Alonso')
+
+      expect(character.children_characters.class).to be Character::ActiveRecord_Relation
+      expect(character.children_characters).to be_empty
+    end
+
+    it 'returns children' do
+      child1 = create(:character)
+      child2 = create(:character)
+      character = create(:character, children: "#{child1.name}, #{child2.name}")
+      child3 = create(:character, father_name: character.name)
+      child4 = create(:character, father_name: character.name)
+
+      expect(character.children_characters).to include(child3, child4)
+    end
+  end
+
+  describe 'grandparents' do
+    it 'returns none if character neither has no declared parents
+      and nobody has declared it as children' do
+      character = create(:character, father_name: '', mother_name: '')
+
+      expect(character.grandparents.class).to be Character::ActiveRecord_Relation
+      expect(character.grandparents).to be_empty
+    end
+
+    it 'returns none if character declared parents are
+      not in the database' do
+      character = create(:character,
+                         father_name: 'Paco de Lucía', mother_name: 'Lola Flores')
+
+      expect(character.grandparents.class).to be Character::ActiveRecord_Relation
+      expect(character.grandparents).to be_empty
+    end
+
+    it 'returns none even grandparent children names match with
+      character parent names' do
+      create(:character, children: 'Frank Sinatra, Paul Anka')
+      create(:character, children: 'Gilda, Meg Ryan')
+      character = create(:character, father_name: 'Frank Sinatra', mother_name: 'Gilda')
+
+      expect(character.grandparents.class).to be Character::ActiveRecord_Relation
+      expect(character.grandparents).to be_empty
+    end
+
+    it 'returns an array of grandparents characters' do
+      grandfather_character = create(:character)
+      grandmother_character = create(:character)
+      father_character = create(:character, father_name: grandfather_character.name)
+      mother_character = create(:character, mother_name: grandmother_character.name)
+      character = create(:character, father_name: father_character.name,
+                                     mother_name: mother_character.name)
+
+      expect(character.grandparents.class).to be Character::ActiveRecord_Relation
+      expect(character.grandparents.size).to eq 2
+      expect(character.grandparents).to include(grandfather_character)
+      expect(character.grandparents).to include(grandmother_character)
+    end
+  end
+
+  describe 'grandchildren' do
+    it 'returns none if character has no children and nobody has declared
+      him as parent' do
+      character = create(:character, children: '')
+
+      expect(character.grandchildren.class).to be Character::ActiveRecord_Relation
+      expect(character.grandchildren).to be_empty
+    end
+
+    it 'returns none if character has declared children but they do not exist' do
+      character = create(:character, children: 'Fernando Alonso')
+
+      expect(character.grandchildren.class).to be Character::ActiveRecord_Relation
+      expect(character.grandchildren).to be_empty
+    end
+
+    it 'returns none if character has children with no children' do
+      character = create(:character, children: 'Zipi, Zape')
+      create(:character, name: 'Zipi', father_name: '', children: '')
+
+      expect(character.grandchildren.class).to be Character::ActiveRecord_Relation
+      expect(character.grandchildren).to be_empty
+    end
+
+    it 'returns grandchildren' do
+      character = create(:character, children: '')
+      child = create(:character, father_name: character.name,
+                                 children: 'Mazinger, Afrodita, Dr. Hell')
+      grandchild1 = create(:character, name: 'Mazinger', father_name: child.name)
+      grandchild2 = create(:character, name: 'Afrodita', father_name: child.name)
+
+      expect(character.grandchildren).to include(grandchild1, grandchild2)
+    end
+  end
+
+  describe 'siblings_characters' do
+    it 'returns none if character has no parents' do
+      character = create(:character, father_name: '', mother_name: '')
+
+      expect(character.siblings_characters.class).to be Character::ActiveRecord_Relation
+      expect(character.siblings_characters).to be_empty
+    end
+
+    it 'returns siblings' do
+      father_character = create(:character)
+      mother_character = create(:character)
+      sibling1 = create(:character, father_name: father_character.name)
+      sibling2 = create(:character, mother_name: mother_character.name)
+      character = create(:character, father_name: father_character.name, mother_name: mother_character.name)
+
+      expect(character.siblings_characters).to include(sibling1, sibling2)
+    end
+  end
+
+  describe 'uncles_and_aunts' do
+    it 'returns none if character has no parents' do
+      character = create(:character, father_name: '', mother_name: '')
+
+      expect(character.uncles_and_aunts.class).to be Character::ActiveRecord_Relation
+      expect(character.uncles_and_aunts).to be_empty
+    end
+
+    it 'returns none if character parents have no siblings' do
+      father_character = create(:character, father_name: '', mother_name: '')
+      mother_character = create(:character, father_name: '', mother_name: '')
+      character = create(:character, father_name: father_character.name,
+                                     mother_name: mother_character.name)
+
+      expect(character.uncles_and_aunts.class).to be Character::ActiveRecord_Relation
+      expect(character.uncles_and_aunts).to be_empty
+    end
+
+    it 'returns uncles and aunts' do
+      grandfather = create(:character)
+      grandmother = create(:character)
+      uncle = create(:character, father_name: grandfather.name)
+      aunt = create(:character, mother_name: grandmother.name)
+      father_character = create(:character, father_name: grandfather.name)
+      mother_character = create(:character, mother_name: grandmother.name)
+      character = create(:character, father_name: father_character.name,
+                                     mother_name: mother_character.name)
+
+      expect(character.uncles_and_aunts).to include(uncle, aunt)
+    end
+  end
+
+  describe 'cousins' do
+    it 'returns none if character has neither uncles nor aunts' do
+      grandfather = create(:character)
+      grandmother = create(:character)
+      father_character = create(:character, father_name: grandfather.name)
+      mother_character = create(:character, mother_name: grandmother.name)
+      character = create(:character, father_name: father_character.name, mother_name: mother_character.name)
+
+      expect(character.cousins.class).to be Character::ActiveRecord_Relation
+      expect(character.cousins).to be_empty
+    end
+
+    it 'returns none if character uncles and aunts have no children' do
+      grandfather = create(:character)
+      grandmother = create(:character)
+      uncle = create(:character, father_name: grandfather.name)
+      aunt = create(:character, mother_name: grandmother.name)
+      father_character = create(:character, father_name: grandfather.name)
+      mother_character = create(:character, mother_name: grandmother.name)
+      character = create(:character, father_name: father_character.name,
+                                     mother_name: mother_character.name)
+
+      expect(character.cousins.class).to be Character::ActiveRecord_Relation
+      expect(character.cousins).to be_empty
+    end
+
+    it 'returns cousins' do
+      grandfather = create(:character)
+      grandmother = create(:character)
+      uncle = create(:character, father_name: grandfather.name)
+      aunt = create(:character, mother_name: grandmother.name)
+      father_character = create(:character, father_name: grandfather.name)
+      mother_character = create(:character, mother_name: grandmother.name)
+      character = create(:character, father_name: father_character.name,
+                                     mother_name: mother_character.name)
+      cousin1 = create(:character, father_name: father_character.name)
+      cousin2 = create(:character, mother_name: aunt.name)
+      cousin3 = create(:character, mother_name: mother_character.name)
+      cousin4 = create(:character, father_name: uncle.name)
+
+      expect(character.cousins).to include(cousin2, cousin4)
+    end
+  end
 end

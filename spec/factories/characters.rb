@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: characters
@@ -44,7 +46,7 @@ FactoryGirl.define do
     biography  { Faker::Lorem.paragraphs.join("\n") }
     personality  { Faker::Lorem.paragraphs.join("\n") }
     titles { Faker::Lorem.sentence }
-    status "Death"
+    status 'Death'
     death { Faker::Lorem.sentence }
     origin { Faker::GameOfThrones.city }
     allegiance { Faker::GameOfThrones.house }
