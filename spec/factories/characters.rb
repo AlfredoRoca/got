@@ -39,6 +39,7 @@
 FactoryGirl.define do
   factory :character do
     name { Faker::GameOfThrones.character }
+    house
     description  { Faker::Lorem.paragraphs.join("\n") }
     biography  { Faker::Lorem.paragraphs.join("\n") }
     personality  { Faker::Lorem.paragraphs.join("\n") }

@@ -1,14 +1,30 @@
 <h1>Importer Result</h1>
 
-<%# TODO %>
-<p>
-  <b>Line 2:</b>
-  <a href="/characters/1">Jon Snow</a>
-</p>
+<!--
+  @importer_result = array of 
+  { 
+    imported: imported, 
+    source: row_hash,
+    character: imported ? new_character : nil,
+    errors: new_character.errors.full_messages 
+  }
+ -->
 
-<p><b>Line 3:</b>
-   Hodor
-  <ul>
-    <li>Invalid words</li>
-  </ul>
-</p>
+<% @importer_result.each_with_index do |row, index| %>
+  <% if row[:imported] %>
+    <p>
+      <label><%= "Line #{index + 1}:" %></label>
+      <%= link_to row[:character].name, row[:character] %>
+    </p>
+  <% else %>
+    <p>
+      <label><%= "Line #{index + 1}:" %></label>
+      <%= row[:source][:name] %>
+      <ul>
+        <% row[:errors].each do |error| %>
+          <li><%= error %></li>
+        <% end -%>
+      </ul>
+    </p>
+  <% end -%>
+<% end -%>
