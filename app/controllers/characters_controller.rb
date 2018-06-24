@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
 class CharactersController < ApplicationController
-  before_action :set_character, only: [:show, :edit, :update, :destroy]
+  before_action :set_character, only: %i[show edit update destroy family]
 
   def index
     @characters = Character.all.order(:name).page(params[:page]).per(26)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @character = Character.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @character = Character.new(character_params)
@@ -47,13 +45,14 @@ class CharactersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_character
-      @character = Character.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def character_params
-      params.require(:character).permit(:name, :house_id, :abstract, :description, :background, :appears_in_season_1, :appears_in_season_2, :appears_in_season_3, :appears_in_season_4, :appears_in_season_5, :appears_in_season_6, :appears_in_season_7, :appears_in_season_8, :appears_in_season_9)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_character
+    @character = Character.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def character_params
+    params.require(:character).permit(:name, :house_id, :abstract, :description, :background, :appears_in_season_1, :appears_in_season_2, :appears_in_season_3, :appears_in_season_4, :appears_in_season_5, :appears_in_season_6, :appears_in_season_7, :appears_in_season_8, :appears_in_season_9, :father, :mother, :spouse, :children, :siblings)
+  end
 end

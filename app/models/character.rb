@@ -39,6 +39,8 @@
 #
 
 class Character < ApplicationRecord
+  include ApplicationHelper
+
   belongs_to :house, inverse_of: :characters
   has_many :images, as: :imageable, inverse_of: :imageable
 
@@ -49,6 +51,8 @@ class Character < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :description, presence: true
+
+  after_commit :establish_parenthood_association
 
   class << self
     def create_with(row)
@@ -162,7 +166,7 @@ class Character < ApplicationRecord
     %w[father mother].each do |parent_role|
       parent_name = self.send(parent_role + '_name')
       if (parent_character = Character.find_by(name: parent_name))
-        self.update("#{parent_role}_id": parent_character.id)
+        self.update_columns("#{parent_role}_id": parent_character.id)
       end
     end
   end
@@ -185,5 +189,45 @@ class Character < ApplicationRecord
 
   def children_names
     (sons_as_father + sons_as_mother).map(&:name)
+  end
+
+  def parents
+    establish_parenthood_association
+    Character.where(id: [father_id, mother_id])
+  end
+
+  def children_characters
+    # ids = Character.where(father: name).ids +
+    #       Character.where(mother: name).ids
+    # Character.where(id: ids.flatten.uniq - [id])
+    Character.where(id: (sons_as_mother.ids + sons_as_father.ids.flatten))
+  end
+
+  def grandparents
+    ids = parents.map { |parent| parent.parents.ids }.flatten.uniq
+    Character.where(id: ids)
+  end
+
+  def grandchildren
+    ids = children_characters.map { |child| child.children_characters.ids }.flatten.uniq
+    Character.where(id: ids)
+  end
+
+  def siblings_characters
+    ids = parents.map(&:children_characters).flatten.map(&:id)
+
+    Character.where(id: ids.flatten.uniq - [id])
+  end
+
+  def uncles_and_aunts
+    ids = []
+    parents.each { |parent| ids << parent.siblings_characters.ids }
+    Character.where(id: ids.flatten.uniq - [id])
+  end
+
+  def cousins
+    ids = []
+    uncles_and_aunts.each { |relative| ids << relative.children_characters.ids }
+    Character.where(id: ids.flatten.uniq - [id])
   end
 end

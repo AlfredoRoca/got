@@ -1,33 +1,32 @@
-<h1>Family Relationships</h1>
-<h2>Grandparents</h2>
-<ul>
-  <li><a href="#">Todo</a></li>
-</ul>
-<h2>Parents</h2>
-<ul>
-  <li><a href="#">Todo</a></li>
-</ul>
-<h2>Siblings</h2>
-<ul>
-  <li><a href="#">Todo</a></li>
-</ul>
-<h2>Step Siblings</h2>
-<ul>
-  <li><a href="#">Todo</a></li>
-</ul>
-<h2>Children</h2>
-<ul>
-  <li><a href="#">Todo</a></li>
-</ul>
-<h2>Grandchildren</h2>
-<ul>
-  <li><a href="#">Todo</a></li>
-</ul>
-<h2>Uncles and aunts</h2>
-<ul>
-  <li><a href="#">Todo</a></li>
-</ul>
-<h2>Cousins</h2>
-<ul>
-  <li><a href="#">Todo</a></li>
-</ul>
+<% present @character do |character_presenter| %>
+  <h1>Family Relationships</h1>
+
+  <h2>Grandparents</h2>
+  <%= character_presenter.grandparents %>
+
+  <h2>Parents</h2>
+  <ul>
+    <li>Father: <%= character_presenter.father %></li>
+    <li>Mother: <%= character_presenter.mother %></li>
+  </ul>
+
+  <h2>Siblings</h2>
+  <%= character_presenter.siblings %>
+
+  <h2>Step Siblings</h2>
+  <ul>
+    <li><a href="#">Todo</a></li>
+  </ul>
+
+  <h2>Children</h2>
+  <%= character_presenter.children %>
+
+  <h2>Grandchildren</h2>
+  <%= character_presenter.grandchildren %>
+
+  <h2>Uncles and aunts</h2>
+  <%= character_presenter.uncles_and_aunts %>
+
+  <h2>Cousins</h2>
+  <%= character_presenter.cousins %>
+<% end -%>

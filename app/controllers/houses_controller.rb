@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HousesController < ApplicationController
-  before_action :set_house, only: [:show, :edit, :update, :destroy]
+  before_action :set_house, only: %i[show edit update destroy]
 
   def index
     @houses = House.all.order(:words)
@@ -16,8 +16,7 @@ class HousesController < ApplicationController
     @house = House.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @house = House.new(house_params)
@@ -50,13 +49,13 @@ class HousesController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_house
-      @house = House.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_house
+    @house = House.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def house_params
-      params.require(:house).permit(:name, :description, :background, :words, :seat, :region, :lord, :religion, :sigil_url, :sigil)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def house_params
+    params.require(:house).permit(:name, :description, :background, :words, :seat, :region, :lord, :religion, :sigil_url, :sigil)
+  end
 end
