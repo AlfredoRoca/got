@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: houses
@@ -21,6 +23,8 @@ class House < ApplicationRecord
   has_many :characters, inverse_of: :house
   has_many :images, as: :imageable
 
-  validates :name, :description, :sigil_url, presence: true
+  validates :name, presence: true, uniqueness: true
+  validates :description, :sigil_url, presence: true
+
   accepts_nested_attributes_for :images
 end

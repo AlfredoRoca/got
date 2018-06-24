@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HousesController < ApplicationController
   before_action :set_house, only: [:show, :edit, :update, :destroy]
 
