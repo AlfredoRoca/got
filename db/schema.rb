@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170112162805) do
+ActiveRecord::Schema.define(version: 20180613060925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,7 +47,11 @@ ActiveRecord::Schema.define(version: 20170112162805) do
     t.boolean  "appears_in_season_9"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "father_id"
+    t.integer  "mother_id"
+    t.index ["father_id"], name: "index_characters_on_father_id", using: :btree
     t.index ["house_id"], name: "index_characters_on_house_id", using: :btree
+    t.index ["mother_id"], name: "index_characters_on_mother_id", using: :btree
   end
 
   create_table "houses", force: :cascade do |t|
