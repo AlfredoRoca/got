@@ -184,6 +184,6 @@ class Character < ApplicationRecord
   end
 
   def children_names
-    (sons_as_father + sons_as_mother).map(&:name) || self[:children]
+    (sons_as_father + sons_as_mother).map(&:name)
   end
 end
